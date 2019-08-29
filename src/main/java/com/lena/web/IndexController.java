@@ -3,6 +3,7 @@ package com.lena.web;
 import com.lena.NoFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * @ClassName IndexController
@@ -13,12 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class IndexController {
-    @GetMapping("/")
-    public String index(){
-        String blog=null;
-        if (blog==null){
-            throw new NoFoundException("博客不存在");
-        }
+    @GetMapping("/{id}/{name}")
+    public String index(@PathVariable Integer id,@PathVariable String name){
+//        String blog=null;
+//        if (blog==null){
+//            throw new NoFoundException("博客不存在");
+//        }
+        System.out.println("-----Index");
         return "index";
     }
 }
