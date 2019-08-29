@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=deice-width,initial-scale=1.0">
@@ -672,10 +672,10 @@ h5,h6{font-size:1em;}
 
 
 <!--语法高亮-->
-<script src="../static/lib/prism/prism.js"></script>
-<script src="../static/lib/tocbot/tocbot.min.js"></script>
-<script src="../static/lib/qrcode/qrcode.min.js"></script>
-<script src="../static/lib/waypoints/jquery.waypoints.min.js"></script>
+<script src="../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+<script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+<script src="../static/lib/qrcode/qrcode.min.js" th:src="@{/lib/qrcode/qrcode.min.js}"></script>
+<script src="../static/lib/waypoints/jquery.waypoints.min.js" th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
     <!--平滑滚动到顶部-->
     <script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
 </body>
