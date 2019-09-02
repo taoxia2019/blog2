@@ -1,6 +1,7 @@
 package com.lena.service;
 
 import com.lena.po.Blog;
+import com.lena.vo.BlogQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,7 +14,7 @@ import org.springframework.data.domain.Pageable;
  */
 public interface BlogService {
     Blog getBlog(Long id);
-    Page<Blog> getList(Pageable pageable,Blog blog);
+    Page<Blog> getList(Pageable pageable,BlogQuery blogVo);
     Blog saveBlog(Blog blog);
     Blog updateBlog(Long id,Blog blog);
     void deleteBlog(Long id);

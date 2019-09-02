@@ -3,6 +3,7 @@ package com.lena.service;
 import com.lena.NotFoundException;
 import com.lena.dao.BlogRepository;
 import com.lena.po.Blog;
+import com.lena.vo.BlogQuery;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,24 +36,24 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Page<Blog> getList(Pageable pageable, Blog blog) {
+    public Page<Blog> getList(Pageable pageable, BlogQuery blogVo) {
         //Specification规格，说明书
-        blogRepository.findAll(new Specification<Blog>() {
+        return blogRepository.findAll(new Specification<Blog>() {
             @Override
             public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
                 //Predicate断言,Criteria条件
                 List<Predicate> predicates=new ArrayList<>();
                 //添加查询条件一,模糊查询blog标题
-                if(!"".equals(blog.getTitle())&& blog.getTitle()!=null){
-                    predicates.add(cb.like(root.<String>get("title"),"%"+blog.getTitle()+"%"));
+                if(!"".equals(blogVo.getTitle())&& blogVo.getTitle()!=null){
+                    predicates.add(cb.like(root.<String>get("title"),"%"+blogVo.getTitle()+"%"));
                 }
                 //添加查询条件二，blog分类，级联查询
-                if(blog.getType().getId()!=null){
-                    predicates.add(cb.equal(root.<Long>get("type").get("id"),blog.getType().getId()));
+                if(blogVo.getTypeId()!=null){
+                    predicates.add(cb.equal(root.<Long>get("type").get("id"),blogVo.getTypeId()));
                 }
                 //添加查询条件三，是否推荐recommend
-                if(blog.isRecommend()){
-                    predicates.add(cb.equal(root.<Boolean>get("recommend"),blog.isRecommend()));
+                if(blogVo.isRecommend()){
+                    predicates.add(cb.equal(root.<Boolean>get("recommend"),blogVo.isRecommend()));
                 }
                 //集合转为数组
                 Predicate[] predicates1 = predicates.toArray(new Predicate[predicates.size()]);
@@ -62,8 +63,6 @@ public class BlogServiceImpl implements BlogService {
             }
         },pageable);
 
-
-        return null;
     }
 
 
