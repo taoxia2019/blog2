@@ -10,4 +10,5 @@ public interface TypeService {
     Page<Type> listType(Pageable pageable);
     Type update(Long id,Type type);
     void deleteType(Long id);
+    Type findByName(String name);
 }
