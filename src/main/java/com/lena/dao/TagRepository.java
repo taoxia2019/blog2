@@ -4,7 +4,7 @@ import com.lena.po.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Created by limi on 2017/10/16.
+ * Created by TaoXia on 2019/8/16.
  */
 public interface TagRepository extends JpaRepository<Tag,Long> {
 

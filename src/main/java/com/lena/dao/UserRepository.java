@@ -4,7 +4,7 @@ import com.lena.po.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Created by limi on 2017/10/15.
+ * Created by TaoXia on 2019/8/15.
  */
 public interface UserRepository extends JpaRepository<User,Long> {
 
