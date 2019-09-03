@@ -1,19 +1,21 @@
 spring:
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+     driverClassName: com.mysql.cj.jdbc.Driver
+     url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
     password: root
   jpa:
     hibernate:
       ddl-auto: none
     show-sql: true
+
 logging:
   level:
     root: warn
-    com.lena: info
-    file: log/blog-pro.log
+    com.lrm: info
+  file: log/blog-pro.log
 server:
   port: 8081
+
 
 

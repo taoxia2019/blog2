@@ -3,6 +3,8 @@ package com.lena.service;
 import com.lena.NotFoundException;
 import com.lena.dao.BlogRepository;
 import com.lena.po.Blog;
+import com.lena.po.Type;
+import com.lena.util.MyBeanUtils;
 import com.lena.vo.BlogQuery;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,78 +12,79 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
- * @ClassName BlogServiceImpl
- * @Description DOTO
- * @Author Administrator
- * @Date 2019/9/2 15:41
- * @Version 1.0
+ * Created by limi on 2017/10/20.
  */
 @Service
 public class BlogServiceImpl implements BlogService {
 
+
     @Autowired
     private BlogRepository blogRepository;
+
     @Override
     public Blog getBlog(Long id) {
         return blogRepository.findById(id).get();
     }
 
+
     @Override
-    public Page<Blog> getList(Pageable pageable, BlogQuery blogVo) {
-        //Specification规格，说明书
+    public Page<Blog> listBlog(Pageable pageable, BlogQuery blog) {
         return blogRepository.findAll(new Specification<Blog>() {
             @Override
             public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-                //Predicate断言,Criteria条件
-                List<Predicate> predicates=new ArrayList<>();
-                //添加查询条件一,模糊查询blog标题
-                if(!"".equals(blogVo.getTitle())&& blogVo.getTitle()!=null){
-                    predicates.add(cb.like(root.<String>get("title"),"%"+blogVo.getTitle()+"%"));
+                List<Predicate> predicates = new ArrayList<>();
+                if (!"".equals(blog.getTitle()) && blog.getTitle() != null) {
+                    predicates.add(cb.like(root.<String>get("title"), "%"+blog.getTitle()+"%"));
                 }
-                //添加查询条件二，blog分类，级联查询
-                if(blogVo.getTypeId()!=null){
-                    predicates.add(cb.equal(root.<Long>get("type").get("id"),blogVo.getTypeId()));
+                if (blog.getTypeId() != null) {
+                    predicates.add(cb.equal(root.<Type>get("type").get("id"), blog.getTypeId()));
                 }
-                //添加查询条件三，是否推荐recommend
-                if(blogVo.isRecommend()){
-                    predicates.add(cb.equal(root.<Boolean>get("recommend"),blogVo.isRecommend()));
+                if (blog.isRecommend()) {
+                    predicates.add(cb.equal(root.<Boolean>get("recommend"), blog.isRecommend()));
                 }
-                //集合转为数组
-                Predicate[] predicates1 = predicates.toArray(new Predicate[predicates.size()]);
-                //放入查询条件中
-                cq.where(predicates1);
+                cq.where(predicates.toArray(new Predicate[predicates.size()]));
                 return null;
             }
         },pageable);
-
     }
 
-
+    @Transactional
     @Override
     public Blog saveBlog(Blog blog) {
+        if (blog.getId() == null) {
+            blog.setCreateTime(new Date());
+            blog.setUpdateTime(new Date());
+            blog.setViews(0);
+        } else {
+            blog.setUpdateTime(new Date());
+        }
         return blogRepository.save(blog);
     }
 
+    @Transactional
     @Override
     public Blog updateBlog(Long id, Blog blog) {
         Blog b = blogRepository.findById(id).get();
-        if(b==null){
+        if (b == null) {
             throw new NotFoundException("该博客不存在");
         }
-        BeanUtils.copyProperties(b,blog);
-
+        BeanUtils.copyProperties(blog,b, MyBeanUtils.getNullPropertyNames(blog));
+        b.setUpdateTime(new Date());
         return blogRepository.save(b);
     }
 
+    @Transactional
     @Override
     public void deleteBlog(Long id) {
         blogRepository.deleteById(id);

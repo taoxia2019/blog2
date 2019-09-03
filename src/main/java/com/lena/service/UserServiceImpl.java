@@ -2,12 +2,16 @@ package com.lena.service;
 
 import com.lena.dao.UserRepository;
 import com.lena.po.User;
-import com.lena.utils.MD5Utils;
+import com.lena.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Created by limi on 2017/10/15.
+ */
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserRepository userRepository;
 
