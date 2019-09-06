@@ -100,6 +100,10 @@
 .typo :root sub,.typo  :root sup {
   vertical-align: baseline; /* for ie9 and other modern browsers */
 }
+.typo li{
+  font-weight: 300;
+  padding: 4px 0;
+}
 
 .typo sup {
   top: -0.5em;
